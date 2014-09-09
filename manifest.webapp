@@ -1,0 +1,22 @@
+{
+    "version":"0.1",
+	"name": "borGPS",
+    "description": "GPS-Gerät in Borg-Optic",
+    "launch_path": "/index.html",
+    "icons": {
+        "16": "/images/icon_016.png",
+        "32": "/images/icon_032.png",
+        "48": "/images/icon_048.png",
+        "128": "/images/icon_128.png"
+    },
+	"developer": {
+        "name": "Maximilian Weissl",
+        "url": "http://www.ipes-ent.com.com"
+    },
+    "default_locale": "de",
+    "permissions": {
+        "geolocation": {
+            "description" : "Used to locate me"
+        }
+	}
+}
