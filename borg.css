@@ -1,6 +1,37 @@
-
 body {
 background-color: #000000;
 color: #95d10f;
 }
 
+#bigOne {
+position: absolute;
+width: 70%;
+height: 20%;
+top: 80%;
+}
+
+#smallOnes {
+position: absolute;
+width: 30%;
+left: 70%;
+height: 100%;
+}
+
+#main {
+position: absolute;
+height: 80%;
+width: 70%;
+}
+
+#line {
+z-index: -1;
+position:absolute;
+top:10px;
+width:100%;
+}
+
+#circle {
+position:absolute;
+top: 10px;
+left: 77%
+}

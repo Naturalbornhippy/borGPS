@@ -9,11 +9,18 @@
 </head>
 <body>
 <!-- Start of first page: #home -->
-<div id="home">
-<p><button onclick="main()">ShowGPS</button></p>
-<div id="out"></div>
-<div id="accuracy"></div>
-<div id="lastUpdate"></div>
-</div>
+<div id="main">
+	<div id="out"></div>
+	<div id="accuracy"></div>
+	<div id="lastUpdate"></div>
+</div> <!-- end main -->
+<div id="navbar_bottom">
+	<div id="bigOne">
+		<img onclick="main()" id="bigButton" src="images/big_button_off.png" width="40" height="40" style="cursor:pointer">
+		<div id="line"><img src="images/line.png" width="80%" height="5px"></div>
+		<div id="circle"><img src="images/circle.png"></div>
+	</div>
+	<div id="smallOnes"></div>
+</div> <!-- end navbar -->
 </body>
 </html>

@@ -1,11 +1,35 @@
 //some vars
 var output = '';
+var divAccuracy = '';
+var bigButton = '';
+var divLastUpdate = '';
+var watchID = 0.0;
+
 
 //main function to start with the app
 function main() {
   output = document.getElementById("out"); 
-  output.innerHTML = "<p>Locating…</p>";
-  navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 10000, maximumAge: 5000});
+  //change the button
+  var a = "./images/big_button.png";
+  var b = "./images/big_button_off.png";
+  bigButton =   document.getElementById("bigButton");
+  var pfad = bigButton.src;
+  pfad = pfad.split("/");
+  pfad = pfad[pfad.length-1];
+  bigButton.src = a;
+  if (pfad == "big_button_off.png") {
+	  output.innerHTML = "<p>Locating…</p>";
+	  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 10000, maximumAge: 5000});
+  }
+  else {
+  navigator.geolocation.clearWatch(watchID);
+  bigButton.src = b;
+  output.innerHTML = "";
+  divAccuracy.innerHTML = "";
+  divLastUpdate.innerHTML = "";
+  }
+
+
 }
 
 function geoFindMe() {
@@ -48,7 +72,7 @@ function error() {
 
 function displayAccuracy(accuracy) {
 	divAccuracy = document.getElementById("accuracy");
-	divAccuracy.innerHTML = "<p>Genauigkeit: " + accuracy;
+	divAccuracy.innerHTML = "<p>Genauigkeit: " + accuracy + " m";
 };
 
 function displayLastChangeDate() {
