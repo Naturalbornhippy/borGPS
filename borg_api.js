@@ -20,22 +20,22 @@ function main() {
   pfad = pfad[pfad.length-1];
   bigButton.src = a;
   if (pfad == "big_button_off.png") {
-	  output.innerHTML = "<p>Locating…</p>";
-	  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 50000, maximumAge: 5000});
+	  output.innerHTML = "<p>...</p>";
+	  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 50000, maximumAge: 1000});
   }
   else {
   navigator.geolocation.clearWatch(watchID);
   bigButton.src = b;
   output.innerHTML = "";
-  divAccuracy.innerHTML = "";
-  divLastUpdate.innerHTML = "";
+  divAccuracy.innerHTML = "~";
+  divLastUpdate.innerHTML = "-<br>-<br>-";
   }
 }
 
 function geoFindMe() {
 
   if (!navigator.geolocation){
-    output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+    output.innerHTML = "<p><<not supporting geo>></p>";
     return;
   }
 };
@@ -51,34 +51,34 @@ function success(position) {
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
     if (buttonActivated == "button3") {
-    output_string = '<p><b>Dezimalgrad</b><br>Latitude: ' + latitude + '° <br>Longitude: ' + longitude + '°</p>';
+    output_string = '<p>N  ' + latitude + '° <br>E  ' + longitude + '°</p>';
     }
 	//2n calc them to bgm and display them
 	var new_cords = portMe_tobgm(latitude, longitude);
 	var latitude_bgm  = new_cords[0];
     var longitude_bgm = new_cords[1];
     if (buttonActivated == "button1") {
-    output_string += '<p><b>Grad, Dezimalminuten</b><br>Latitude: N ' + latitude_bgm[0] + '° '+ latitude_bgm[1].toFixed(4) + '<br>Longitude: E ' + longitude_bgm[0] + '° ' + longitude_bgm[1].toFixed(4)+' </p>';
+    output_string += '<p>N  ' + latitude_bgm[0] + '° '+ latitude_bgm[1].toFixed(6) + '<br>E  ' + longitude_bgm[0] + '° ' + longitude_bgm[1].toFixed(6)+' </p>';
 	}
 	//3rd get not bgms and display it
 	new_cords = portMe_tobgms(latitude_bgm, longitude_bgm);
 	var latitude_bgms = new_cords[0];
 	var longitude_bgms = new_cords[1];
     if (buttonActivated == "button2") {
-	output_string += '<p><b>Grad, Minuten, Sekunden</b><br>Latitude: N ' + latitude_bgms[0] + '° '+ latitude_bgms[1] + '\' ' + latitude_bgms[2].toFixed(3)+'\'\'<br>Longitude: E ' + longitude_bgms[0] + '° ' + longitude_bgms[1]+'\' '+ longitude_bgms[2].toFixed(3)+ '\'\'</p>';
+	output_string += '<p>N  ' + latitude_bgms[0] + '° '+ latitude_bgms[1] + '\' ' + latitude_bgms[2].toFixed(3)+'\'\'<br>E  ' + longitude_bgms[0] + '° ' + longitude_bgms[1]+'\' '+ longitude_bgms[2].toFixed(3)+ '\'\'</p>';
 	}
 	//update the output div
 	output.innerHTML = output_string;
 };
 
 function error() {
-    output.innerHTML = "Unable to retrieve your location";
+    output.innerHTML = "###not_working###";
   };
 
 
 function displayAccuracy(accuracy) {
 	divAccuracy = document.getElementById("accuracy");
-	divAccuracy.innerHTML = "<p>Genauigkeit: " + accuracy + " m";
+	divAccuracy.innerHTML = "<p>m<br>" + accuracy + "";
 };
 
 function displayLastChangeDate() {
@@ -86,9 +86,9 @@ function displayLastChangeDate() {
 	var hours = jetzt.getHours();
 	var mins = jetzt.getMinutes();
 	var seconds = jetzt.getSeconds();
-	zeit = hours+':'+mins+':'+seconds;
+	zeit = hours+'<br>'+mins+'<br>'+seconds;
 	divLastUpdate = document.getElementById("lastUpdate");
-	divLastUpdate.innerHTML = "Updated: " + zeit;
+	divLastUpdate.innerHTML = zeit;
 };
 
 function portMe_tobgm(latitude, longitude) {
