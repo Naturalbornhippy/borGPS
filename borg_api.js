@@ -5,9 +5,11 @@ var bigButton = '';
 var divLastUpdate = '';
 var watchID = 0.0;
 
+var buttonActivated = 'button1';
 
 //main function to start with the app
 function main() {
+  setButton();
   output = document.getElementById("out"); 
   //change the button
   var a = "./images/big_button.png";
@@ -19,7 +21,7 @@ function main() {
   bigButton.src = a;
   if (pfad == "big_button_off.png") {
 	  output.innerHTML = "<p>Locating…</p>";
-	  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 10000, maximumAge: 5000});
+	  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 50000, maximumAge: 5000});
   }
   else {
   navigator.geolocation.clearWatch(watchID);
@@ -28,8 +30,6 @@ function main() {
   divAccuracy.innerHTML = "";
   divLastUpdate.innerHTML = "";
   }
-
-
 }
 
 function geoFindMe() {
@@ -50,17 +50,23 @@ function success(position) {
 	//first get the dec coords and add them to the output
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
+    if (buttonActivated == "button3") {
     output_string = '<p><b>Dezimalgrad</b><br>Latitude: ' + latitude + '° <br>Longitude: ' + longitude + '°</p>';
+    }
 	//2n calc them to bgm and display them
 	var new_cords = portMe_tobgm(latitude, longitude);
 	var latitude_bgm  = new_cords[0];
     var longitude_bgm = new_cords[1];
+    if (buttonActivated == "button1") {
     output_string += '<p><b>Grad, Dezimalminuten</b><br>Latitude: N ' + latitude_bgm[0] + '° '+ latitude_bgm[1].toFixed(4) + '<br>Longitude: E ' + longitude_bgm[0] + '° ' + longitude_bgm[1].toFixed(4)+' </p>';
+	}
 	//3rd get not bgms and display it
 	new_cords = portMe_tobgms(latitude_bgm, longitude_bgm);
 	var latitude_bgms = new_cords[0];
 	var longitude_bgms = new_cords[1];
+    if (buttonActivated == "button2") {
 	output_string += '<p><b>Grad, Minuten, Sekunden</b><br>Latitude: N ' + latitude_bgms[0] + '° '+ latitude_bgms[1] + '\' ' + latitude_bgms[2].toFixed(3)+'\'\'<br>Longitude: E ' + longitude_bgms[0] + '° ' + longitude_bgms[1]+'\' '+ longitude_bgms[2].toFixed(3)+ '\'\'</p>';
+	}
 	//update the output div
 	output.innerHTML = output_string;
 };
@@ -127,4 +133,34 @@ function portMe_tobgms(latitude_bgm, longitude_bgm) {
 	long_return = [longitude_bgm[0], longitude_bgm_min, longitude_bgm_sek];
 	return [lat_return, long_return];
 };
+
+
+function changeMode(param) {
+	buttonActivated = param;
+    setButton();
+};
+
+
+function setButton() {
+	var buttonMinDec = document.getElementById("MinDec");
+	var buttonMinSek = document.getElementById("MinSek");
+	var buttonDec = document.getElementById("Dec");
+
+   if (buttonActivated == 'button1') {
+  		buttonMinDec.src = "./images/minDec.png";   
+		buttonMinSek.src = "./images/minSek_on.png";
+		buttonDec.src = "./images/Dec.png";
+   }
+   if (buttonActivated == 'button2') {
+		buttonMinDec.src = "./images/minDec_on.png";
+	    buttonMinSek.src = "./images/minSek.png";
+		buttonDec.src = "./images/Dec.png";
+   }
+   if (buttonActivated == 'button3') {
+		buttonMinDec.src = "./images/minDec.png";
+	    buttonMinSek.src = "./images/minSek.png";
+	 	buttonDec.src = "./images/Dec_on.png";
+   }
+};
+
 
