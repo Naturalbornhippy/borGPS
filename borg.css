@@ -21,7 +21,7 @@ height: 98%;
 #main {
 position: absolute;
 height: 79%;
-width: 98%;
+width: 85%;
 }
 
 #line {
@@ -87,8 +87,8 @@ left:10%;
 
 #middlecoords1 {
 position: absolute;
-top:30.5%;
-left: 21%;
+top:30%;
+left: 20%;
 }
 
 #accuracy {
