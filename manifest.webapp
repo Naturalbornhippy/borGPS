@@ -1,7 +1,7 @@
 {
-    "version":"0.1",
+    "version":"0.6",
 	"name": "borGPS",
-    "description": "GPS-Gerät in Borg-Optic",
+    "description": "gps in borg optic",
     "launch_path": "/index.html",
     "icons": {
         "16": "/images/icon_016.png",

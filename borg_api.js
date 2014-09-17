@@ -7,8 +7,9 @@ var watchID = 0.0;
 
 var buttonActivated = 'button1';
 
+window.onload = function() {
+  document.getElementById("bigButton").onclick = function() {
 //main function to start with the app
-function main() {
   setButton();
   output = document.getElementById("out"); 
   //change the button
@@ -30,12 +31,25 @@ function main() {
   divAccuracy.innerHTML = "~";
   divLastUpdate.innerHTML = "-<br>-<br>-";
   }
-}
+}//endBigButton
+document.getElementById("MinDec").onclick = function() {
+	buttonActivated = "button2";
+    setButton();
+}//end MinDec
+document.getElementById("MinSek").onclick = function() {
+	buttonActivated = "button1";
+    setButton();
+}//end MinSek
+document.getElementById("Dec").onclick = function() {
+	buttonActivated = "button3";
+    setButton();
+}//end Dec
+}; //end onload
 
 function geoFindMe() {
 
   if (!navigator.geolocation){
-    output.innerHTML = "<p><<not supporting geo>></p>";
+    output.innerHTML = "<p>###not supporting geo###</p>";
     return;
   }
 };
@@ -134,11 +148,6 @@ function portMe_tobgms(latitude_bgm, longitude_bgm) {
 	return [lat_return, long_return];
 };
 
-
-function changeMode(param) {
-	buttonActivated = param;
-    setButton();
-};
 
 
 function setButton() {
