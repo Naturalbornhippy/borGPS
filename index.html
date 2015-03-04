@@ -4,32 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>borGPS</title>
-<link rel="stylesheet" type="text/css" href="borg.css">
+<link href="headers.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-size: 8px;
+	  background-color: #000000;
+    }
+    h2.bb-docs {
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: #666;
+      margin: -0.1rem 0 0;
+      background-color: #f5f5f5;
+      padding: 0.4rem 0.4rem 0.4rem 3rem;
+      border: solid 0.1rem #e8e8e8;
+      margin: 3rem 0 1rem;
+    }
+
+    section[role="region"] {
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+  </style>
 <script language="javascript" type="text/javascript" src="borg_api.js"></script>
 </head>
-<body>
+  <section role="region" class="skin-dark">
+    <header>
+      <menu type="toolbar">
+      <a href="settings.html"><span class="icon icon-options">options</span></a>
+      </menu>
+      <h1>borGPS</h1>
+    </header>
+  </section>
 <!-- Start of first page: #home -->
-<div id="main">
-	<div id="accuracy">~</div>
-	<div id="smallline1"><img src="images/small_coord.png" height="3px" width="100%"></div>
-	<div id="circle2"><img src="images/circle.png" width="30%"></div>
-	<div id="smallline2"><img src="images/small_coord2.png" height="90%" width="3px"></div>
-	<div id="out"></div>
-	<div id="smallline3"><img src="images/small_coord.png" height="3px" width="60%"></div>
-	<div id="middlecoords1"><img src="images/middle_coords.png" width="60"></div>
-</div> <!-- end main -->
-<div id="navbar_bottom">
-	<div id="bigOne">
-		<img id="bigButton" src="images/big_button_off.png" width="40" height="40" style="cursor:pointer">
-		<div id="line"><img src="images/line.png" width="80%" height="5px"></div>
-		<div id="circle"><img src="images/circle.png"></div>
-	</div>
-	<div id="smallOnes">
-		<img id="MinDec" src="images/minDec.png" width="40" height="40" style="cursor:pointer">
-		<img id="MinSek" src="images/minSek.png" width="40" height="40" style="cursor:pointer">
-		<img id="Dec" src="images/Dec.png" width="40" height="40" style="cursor:pointer">
-	</div>
-<div id="lastUpdate">-<br>-<br>-</div>
-</div> <!-- end navbar -->
+<div id="content">
+	<div id="main"></div> <!-- Place Coords here -->
+	<div id="accuracy">~</div><!-- Accuracy Layer -->
+	<div id="lastUpdate">-<br>-<br>-</div><!-- LastUpdate is placed here -->
+	<div id="on_off"></div><!-- region to place the on/off button-->
+	<div id="settings"></div><!-- show here the selected Settings-->
+</div> <!-- end content -->
+<script language="javascript" type="text/javascript">startIndex();</script>
 </body>
 </html>

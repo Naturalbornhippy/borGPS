@@ -1,0 +1,50 @@
+#content {
+background-color: #00adad;
+color: #424242;
+height: 100%;
+width:100%;
+}
+
+<!-- /* Main Areas */ -->
+#main {
+position: absolute;
+height: 70%;
+width: 70%;
+}
+#lastUpdate {
+position: absolute;
+width: 30%;
+left: 70%;
+height: 50%;
+font-size: 11px;
+}
+#accuracy {
+position: absolute;
+top: 20%;
+left: 40%;
+font-size: 11px;
+}
+
+#on_off {
+position: absolute;
+top: 70%;
+height: 30%;
+width: 70%;
+}
+#settings {
+position: absolute;
+left: 70%;
+top:50%;
+height: 50%;
+}
+<!-- /* End Main Areas */ -->
+
+
+#placeDate {
+margin-top: 10%;
+margin-left: 10%;
+}
+
+<!-- /* LastUpdate Area */ -->
+<!-- /* END LastUpdate Area */ -->
+

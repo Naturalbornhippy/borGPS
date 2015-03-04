@@ -5,46 +5,77 @@ var bigButton = '';
 var divLastUpdate = '';
 var watchID = 0.0;
 
-var buttonActivated = 'button1';
+function startIndex() {
+	//load the settings first
+	startSettings();
 
-window.onload = function() {
-  document.getElementById("bigButton").onclick = function() {
-//main function to start with the app
-  setButton();
-  output = document.getElementById("out"); 
-  //change the button
-  var a = "./images/big_button.png";
-  var b = "./images/big_button_off.png";
-  bigButton =   document.getElementById("bigButton");
-  var pfad = bigButton.src;
-  pfad = pfad.split("/");
-  pfad = pfad[pfad.length-1];
-  bigButton.src = a;
-  if (pfad == "big_button_off.png") {
-	  output.innerHTML = "<p>...</p>";
-	  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 50000, maximumAge: 1000});
-  }
-  else {
-  navigator.geolocation.clearWatch(watchID);
-  bigButton.src = b;
-  output.innerHTML = "";
-  divAccuracy.innerHTML = "~";
-  divLastUpdate.innerHTML = "-<br>-<br>-";
-  }
-}//endBigButton
-document.getElementById("MinDec").onclick = function() {
-	buttonActivated = "button2";
-    setButton();
-}//end MinDec
-document.getElementById("MinSek").onclick = function() {
-	buttonActivated = "button1";
-    setButton();
-}//end MinSek
-document.getElementById("Dec").onclick = function() {
-	buttonActivated = "button3";
-    setButton();
-}//end Dec
+	//setup the html elements
+	setMainArea();
+	setLastUpdate();
+	setOnOff();
+    output = document.getElementById("out"); 
+
+	if (localStorage.getItem('borgTheme') == 'borg') {
+
+			document.getElementById("bigButton").onclick = function() {
+			on_off_button = document.getElementById("on_off_button");
+			var pfad = on_off_button.src;
+			var a = "./images/big_button.png";
+			var b = "./images/big_button_off.png";
+			pfad = pfad.split("/");
+			pfad = pfad[pfad.length-1];
+			on_off_button.src = a;
+			if (pfad == "big_button_off.png") {
+				  output.innerHTML = "<p>...</p>";
+				  watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 50000, maximumAge: 1000});
+			  }
+			else {
+			  navigator.geolocation.clearWatch(watchID);
+			  on_off_button.src = b;
+			  output.innerHTML = "";
+			  divAccuracy.innerHTML = "~";
+			  divLastUpdate.innerHTML = "-<br>-<br>-"
+		   }//else
+   }//if onclick
+   }//if borg 
+
+   if (localStorage.getItem('borgTheme') == 'normal') {
+		   document.getElementById("bigButton").onclick = function() {
+		   var buttonText = document.getElementById("bigButton").firstChild.data;
+		   if (buttonText=='Stop') {
+				  navigator.geolocation.clearWatch(watchID);
+				  output.innerHTML = "";
+				  divAccuracy.innerHTML = "~";
+				  divLastUpdate.innerHTML = "-<br>-<br>-"
+				  document.getElementById("bigButton").firstChild.data = "Start";
+		   }
+		   else {
+			    output.innerHTML = "<p>...</p>";
+  			    watchID = navigator.geolocation.watchPosition(success, error, {enableHighAccuracy: true, timeout: 50000, maximumAge: 1000});
+				document.getElementById("bigButton").firstChild.data = "Stop";
+			}
+   }//if onclick
+   }//if normal
+
 }; //end onload
+
+function startSet() {
+	document.getElementById("iconSave").onclick = function() {
+	//store the format
+	var e = document.getElementById("myFormat");
+	var foo = e.options[e.selectedIndex].value;
+
+	localStorage.setItem('borgFormat', foo);
+	//store the theme
+	var e = document.getElementById("myTheme");
+	var foo = e.options[e.selectedIndex].value;
+
+	localStorage.setItem('borgTheme', foo);
+	
+	window.location = "index.html";
+	}
+}
+
 
 function geoFindMe() {
 
@@ -64,21 +95,21 @@ function success(position) {
 	//first get the dec coords and add them to the output
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
-    if (buttonActivated == "button3") {
+    if (localStorage.getItem('borgFormat') == "Dec") {
     output_string = '<p>N  ' + latitude + '° <br>E  ' + longitude + '°</p>';
     }
 	//2n calc them to bgm and display them
 	var new_cords = portMe_tobgm(latitude, longitude);
 	var latitude_bgm  = new_cords[0];
     var longitude_bgm = new_cords[1];
-    if (buttonActivated == "button1") {
+    if (localStorage.getItem('borgFormat')== "MinDec") {
     output_string += '<p>N  ' + latitude_bgm[0] + '° '+ latitude_bgm[1].toFixed(6) + '<br>E  ' + longitude_bgm[0] + '° ' + longitude_bgm[1].toFixed(6)+' </p>';
 	}
 	//3rd get not bgms and display it
 	new_cords = portMe_tobgms(latitude_bgm, longitude_bgm);
 	var latitude_bgms = new_cords[0];
 	var longitude_bgms = new_cords[1];
-    if (buttonActivated == "button2") {
+    if (localStorage.getItem('borgFormat') == "MinSek") {
 	output_string += '<p>N  ' + latitude_bgms[0] + '° '+ latitude_bgms[1] + '\' ' + latitude_bgms[2].toFixed(3)+'\'\'<br>E  ' + longitude_bgms[0] + '° ' + longitude_bgms[1]+'\' '+ longitude_bgms[2].toFixed(3)+ '\'\'</p>';
 	}
 	//update the output div
@@ -149,27 +180,134 @@ function portMe_tobgms(latitude_bgm, longitude_bgm) {
 };
 
 
+//R setON_off Areas
+function setOnOff() {
+	var areaOnOff= document.getElementById("on_off");
 
-function setButton() {
-	var buttonMinDec = document.getElementById("MinDec");
-	var buttonMinSek = document.getElementById("MinSek");
-	var buttonDec = document.getElementById("Dec");
+	if (localStorage.getItem('borgTheme') == 'borg') {
+		var outputString = '<div id="line"><img src="images/line.png" width="80%" height="5px"></div><div id="bigButton"><img id="on_off_button" src="images/big_button_off.png" width="40" height="40" style="cursor:pointer"></div><div id="circle"><img src="images/circle.png"></div>';
+	}
+	if (localStorage.getItem('borgTheme') == 'normal') {
+		var outputString =' <button type="button" id="bigButton">Start</button> ';
+	}
+	areaOnOff.innerHTML = outputString;
+};
 
-   if (buttonActivated == 'button1') {
-  		buttonMinDec.src = "./images/minDec.png";   
-		buttonMinSek.src = "./images/minSek_on.png";
-		buttonDec.src = "./images/Dec.png";
-   }
-   if (buttonActivated == 'button2') {
-		buttonMinDec.src = "./images/minDec_on.png";
-	    buttonMinSek.src = "./images/minSek.png";
-		buttonDec.src = "./images/Dec.png";
-   }
-   if (buttonActivated == 'button3') {
-		buttonMinDec.src = "./images/minDec.png";
-	    buttonMinSek.src = "./images/minSek.png";
-	 	buttonDec.src = "./images/Dec_on.png";
-   }
+//R Load CSS now
+function loadCSS() {
+            var e = document.createElement("link");
+            e.type = "text/css";
+            e.rel = "stylesheet";
+			if (localStorage.getItem('borgTheme') == 'borg') {
+            e.href = "borg.css";
+		    };
+			if (localStorage.getItem('borgTheme') == 'normal') {
+            e.href = "normal.css";
+		    };
+
+            document.getElementsByTagName("head")[0].appendChild(e);
+};
+
+//R This function sets the main area
+function setMainArea() {
+	var areaSettings= document.getElementById("main");
+	if (localStorage.getItem('borgTheme') == 'borg') {
+
+		var mainAreaOutput = '<div id="smallline1"><img src="images/small_coord.png" height="3px" width="100%"></div><div id="smallline2"><img src="images/small_coord2.png" height="90%" width="3px"></div><div id="smallline3"><img src="images/small_coord.png" height="3px" width="60%"></div><div id="middlecoords1"><img src="images/middle_coords.png" width="60"></div><div id="out">- - - -</div>';
+	}
+	if (localStorage.getItem('borgTheme') == 'normal') {
+		var mainAreaOutput = '<div id="out">- - - -</div>';
+	}
+    areaSettings.innerHTML = mainAreaOutput;
+
 };
 
 
+//R This function sets the lastUpdateArea
+function setLastUpdate() {
+	var areaLastUpdate= document.getElementById("lastUpdate");
+	if (localStorage.getItem('borgTheme') == 'borg') {
+		var outputString = '<div id="placeDate">-<br>-<br>-</div>';
+	}
+	if (localStorage.getItem('borgTheme') == 'normal') {
+		var outputString = '<div id="placeDate">-<br>-<br>-</div>';
+	}
+	areaLastUpdate.innerHTML = outputString;
+};
+
+//R This function sets the settingsAreas with the elements need for the template
+function setSettings() {
+	var areaSettings= document.getElementById("settings");
+	
+	if (localStorage.getItem('borgTheme') == 'borg') {
+		var outputButtons = '<div id="smallOnes"><img id="MinDec" src="images/minDec.png" width="40" height="40"><img id="MinSek" src="images/minSek.png" width="40" height="40"><img id="Dec" src="images/Dec.png" width="40" height="40"></div>';
+		areaSettings.innerHTML = outputButtons;
+
+		var buttonMinDec = document.getElementById("MinDec");
+		var buttonMinSek = document.getElementById("MinSek");
+		var buttonDec = document.getElementById("Dec");
+
+	   if (localStorage.getItem('borgFormat') == 'MinSek') {
+	  		buttonMinDec.src = "./images/minDec.png";   
+			buttonMinSek.src = "./images/minSek_on.png";
+			buttonDec.src = "./images/Dec.png";
+	   }
+	   if (localStorage.getItem('borgFormat') == 'MinDec') {
+			buttonMinDec.src = "./images/minDec_on.png";
+			buttonMinSek.src = "./images/minSek.png";
+			buttonDec.src = "./images/Dec.png";
+	   }
+	   if (localStorage.getItem('borgFormat') == 'Dec') {
+			buttonMinDec.src = "./images/minDec.png";
+			buttonMinSek.src = "./images/minSek.png";
+		 	buttonDec.src = "./images/Dec_on.png";
+	   }
+	}
+
+};
+
+
+
+// Check the setttings and populate or Set
+function startSettings() {
+if(!localStorage.getItem('borgTheme')) {
+  populateStorage();
+} else {
+  	loadCSS();
+}
+if(!localStorage.getItem('borgFormat')) {
+  populateStorage();
+} else {
+  	setSettings();
+}
+};
+
+
+//function init Storage Wars
+function populateStorage() {
+localStorage.setItem('borgTheme', 'borg');
+localStorage.setItem('borgFormat', 'MinDec');
+loadCSS();
+setSettings();
+};
+
+
+function setFormat() {
+	var sel = document.getElementById('myFormat');
+    for(var i = 0, j = sel.options.length; i < j; ++i) {
+        if(sel.options[i].innerHTML === localStorage.getItem('borgFormat')) {
+           sel.selectedIndex = i;
+           break;
+        }
+    }
+}
+
+function setTheme() {
+	var sel = document.getElementById('myTheme');
+    for(var i = 0, j = sel.options.length; i < j; ++i) {
+        if(sel.options[i].innerHTML === localStorage.getItem('borgTheme')) {
+           sel.selectedIndex = i;
+           break;
+        }
+    }
+}
